@@ -1,0 +1,139 @@
+/* Reset básico */
+* {
+  box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
+  margin: 0; /* Elimina márgenes predeterminados */
+  padding: 0; /* Elimina rellenos predeterminados */
+  font-family: sans-serif; /* Fuente por defecto para todo */
+}
+
+/* Estilos del cuerpo */
+body {
+  padding-top: 60px; /* Espacio para la topbar fija */
+  background-color: #141516; /* Fondo claro para contraste */
+}
+
+/* Topbar */
+.topbar {
+  background-color: #24252a;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  .tools {
+    width: 100%;
+    max-width: 1600px; /* Limita el ancho de la topbar */
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+
+    .toolsLeft,
+    .toolsCenter,
+    .toolsRight {
+      flex: 1 1 33.33%;
+      display: flex;
+      align-items: center;
+    }
+
+    .toolsLeft {
+      justify-content: flex-start;
+      gap: 12px;
+      margin-right: 150px;
+    }
+
+    .toolsCenter {
+      justify-content: center;
+      color: #edf0f1;
+
+      label {
+        margin-right: 8px;
+      }
+
+      input {
+        width: 100px;
+      }
+    }
+
+    .toolsRight {
+      justify-content: flex-end;
+      gap: 8px;
+    }
+  }
+}
+
+/* Estilos comunes para botones */
+button {
+  display: flex;
+  align-items: center;
+  border: 2px solid transparent;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Botones secondary (blanco) */
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #000000;
+
+  &:hover {
+    border-color: #8ac1ff;
+    background-color: #dfdbe5;
+  }
+
+  &.active {
+    border-color: #0077ff;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+    filter: brightness(0); /* SVG negro */
+  }
+
+  span {
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+/* Botones primary (azul) */
+.btn-primary {
+  background-color: #0077ff;
+  color: #edf0f1;
+
+  &:hover {
+    border-color: #8ac1ff;
+    background-color: #0056b3;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    filter: brightness(0) invert(1); /* SVG blanco */
+  }
+
+  span {
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+/* Contenido principal */
+main {
+  display: flex; /* Centra el canvas */
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px); /* Ajusta la altura restando la topbar */
+}
+
+/* Canvas */
+#canvas {
+  background-color: white; /* Fondo blanco para el área de dibujo */
+  border: 1px solid #ccc; /* Borde sutil para visualizarlo */
+}

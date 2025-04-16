@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paint</title>
+    <link
+      rel="icon"
+      href="icons/SCP_Foundation_(emblem).svg"
+      type="image/webp"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="topbar">
+      <div class="tools">
+        <div class="toolsLeft">
+          <button class="btn-secondary" data-tool="clear">
+            <img src="icons/delete.svg" alt="Trash" />
+          </button>
+          <button class="btn-secondary" data-tool="back">
+            <img src="icons/arrow_back.svg" alt="Back" />
+          </button>
+          <button class="btn-secondary" data-tool="forward">
+            <img src="icons/arrow_forward.svg" alt="Forward" />
+          </button>
+          <button class="btn-secondary" data-tool="pencil">
+            <img src="icons/pencil.svg" alt="Pencil" />
+          </button>
+          <button class="btn-secondary" data-tool="triangle">
+            <img src="icons/triangle.svg" alt="Triangle" />
+          </button>
+          <button class="btn-secondary" data-tool="square">
+            <img src="icons/square.svg" alt="Square" />
+          </button>
+          <button class="btn-secondary" data-tool="rectangle">
+            <img src="icons/rectangle.svg" alt="Rectangle" />
+          </button>
+          <button class="btn-secondary" data-tool="circle">
+            <img src="icons/circle.svg" alt="Circle" />
+          </button>
+          <button class="btn-secondary" data-tool="line">
+            <img src="icons/line.svg" alt="Line" />
+          </button>
+          <button class="btn-secondary" data-tool="eraser">
+            <img src="icons/eraser.svg" alt="Eraser" />
+          </button>
+        </div>
+        <div class="toolsCenter">
+          <label for="thickness">Thickness</label>
+          <input
+            type="range"
+            class="form-range"
+            id="thickness"
+            min="1"
+            max="20"
+            value="1"
+            title="Selecciona el grosor de la herramienta"
+          />
+          <label for="colorPicker">Color</label>
+          <input
+            type="color"
+            id="colorPicker"
+            value="#000000"
+            title="Selecciona el color de la herramienta"
+          />
+        </div>
+        <div class="toolsRight">
+          <button class="btn-primary" data-tool="download">
+            <img src="icons/download.svg" alt="Download" />
+          </button>
+          <button class="btn-primary" data-tool="upload">
+            <img src="icons/upload.svg" alt="Upload" />
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <canvas id="canvas" width="1600" height="900"></canvas>
+    </main>
+    <script type="module" src="script/core/app.js"></script>
+  </body>
+</html>
