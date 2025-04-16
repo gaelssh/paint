@@ -1,4 +1,3 @@
-// shapes/square.js
 import {
   getCoordinates,
   startDrawing,
@@ -6,33 +5,19 @@ import {
   createTool,
 } from '../core/drawingUtils.js'
 
-// Función para dibujar un cuadrado al estilo Paint de Windows
-// El punto inicial queda fijo y el lado del cuadrado se determina por
-// la distancia más grande entre el punto inicial y el punto final
-const drawSquare = (context, startX, startY, endX, endY) => {
+// Función para dibujar una línea al estilo Paint de Windows
+// El punto inicial y final determinan el comienzo y fin de la línea
+const drawLine = (context, startX, startY, endX, endY) => {
   if (endX === null || endY === null) return
 
-  // Calcular el lado del cuadrado
-  const width = endX - startX
-  const height = endY - startY
-  const side = Math.max(Math.abs(width), Math.abs(height))
-
-  // Determinar la dirección del cuadrado
-  const signX = Math.sign(width) || 1
-  const signY = Math.sign(height) || 1
-
-  // Calcular el punto final manteniendo la proporción de cuadrado
-  const finalX = startX + side * signX
-  const finalY = startY + side * signY
-
-  // Dibujar el cuadrado
   context.beginPath()
-  context.rect(startX, startY, finalX - startX, finalY - startY)
+  context.moveTo(startX, startY)
+  context.lineTo(endX, endY)
   context.stroke()
 }
 
-// Configurar la herramienta cuadrado
-const setSquareTool = (context) => {
+// Configurar la herramienta línea
+const setLineTool = (context) => {
   let startX, startY
   let canvasBackup = null
 
@@ -66,8 +51,8 @@ const setSquareTool = (context) => {
       context.save()
       context.setLineDash([5, 5]) // Línea punteada
 
-      // Dibujar el cuadrado en previsualización
-      drawSquare(context, startX, startY, currentX, currentY)
+      // Dibujar la línea en previsualización
+      drawLine(context, startX, startY, currentX, currentY)
 
       // Restaurar estilo
       context.restore()
@@ -84,10 +69,10 @@ const setSquareTool = (context) => {
       // Obtener la posición final del mouse
       const { x: endX, y: endY } = getCoordinates(event, getRect)
 
-      // Dibujar el cuadrado final con línea sólida
+      // Dibujar la línea final con línea sólida
       context.save()
       context.setLineDash([]) // Línea sólida
-      drawSquare(context, startX, startY, endX, endY)
+      drawLine(context, startX, startY, endX, endY)
       context.restore()
 
       // Limpiar
@@ -96,4 +81,4 @@ const setSquareTool = (context) => {
   })
 }
 
-export { drawSquare, setSquareTool }
+export { drawLine, setLineTool }

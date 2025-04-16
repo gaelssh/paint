@@ -1,5 +1,6 @@
 import { context } from './canvas.js'
 import { addEvents } from './events.js'
+import { getCurrentTool } from './tools.js'
 
 const thicknessInput = document.getElementById('thickness')
 const colorPicker = document.getElementById('colorPicker')
@@ -15,7 +16,11 @@ const setupInputListeners = () => {
       if (e.target === thicknessInput) {
         context.lineWidth = parseInt(e.target.value, 10)
       } else if (e.target === colorPicker) {
-        context.strokeStyle = e.target.value
+        if (getCurrentTool() === 'eraser') {
+          context.strokeStyle = '#ffffff'
+        } else {
+          context.strokeStyle = e.target.value
+        }
       }
     },
   }

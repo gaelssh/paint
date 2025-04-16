@@ -2,30 +2,51 @@
 import { canvas, context } from './canvas.js'
 import { setPencilTool } from '../shapes/pencil.js'
 import { setSquareTool } from '../shapes/square.js'
+import { setTriangleTool } from '../shapes/triangle.js'
+import { setCircleTool } from '../shapes/circle.js'
+import { setRectangleTool } from '../shapes/rectangle.js'
+import { setLineTool } from '../shapes/line.js'
 import { addEvents } from './events.js'
 import { colorPicker } from './inputs.js' // Importar colorPicker
 import { clearCanvas } from './clear.js' // Importar clearCanvas
 
 const tools = document.querySelectorAll('.tools button')
 let currentTool = 'pencil'
+let savedColor = '#000000' // Para guardar el color antes de cambiar al eraser
 
 const setTool = (tool) => {
+  // Desactivar todas las herramientas anteriores
   tools.forEach((button) => button.classList.remove('active'))
+
+  // Activar la herramienta seleccionada
   const activeButton = document.querySelector(`button[data-tool="${tool}"]`)
   if (activeButton) {
     activeButton.classList.add('active')
   } else {
     console.error(`No se encontró botón con data-tool="${tool}"`)
+    return
   }
+
+  // Si estamos cambiando desde el eraser a otra herramienta
+  if (currentTool === 'eraser' && tool !== 'eraser') {
+    // Restaurar el color guardado
+    context.strokeStyle = savedColor
+  } else if (tool === 'eraser') {
+    // Si estamos cambiando a eraser, guardar el color actual
+    savedColor = colorPicker.value || '#000000'
+  }
+
+  // Actualizar la herramienta actual
   currentTool = tool
 
+  // Aplicar la nueva herramienta
   switch (tool) {
     case 'pencil':
       context.strokeStyle = colorPicker.value || '#000000'
       setPencilTool(context)(canvas)
       break
     case 'eraser':
-      // Eraser is just a white pencil
+      // Eraser is just a white pencil, forzar color blanco siempre
       context.strokeStyle = '#ffffff'
       setPencilTool(context)(canvas)
       break
@@ -44,19 +65,24 @@ const setTool = (tool) => {
       setPencilTool(context)(canvas)
       break
     case 'triangle':
-      console.log("Herramienta 'triangle' no implementada aún")
+      context.strokeStyle = colorPicker.value || '#000000'
+      setTriangleTool(context)(canvas)
       break
     case 'square':
+      context.strokeStyle = colorPicker.value || '#000000'
       setSquareTool(context)(canvas)
       break
     case 'rectangle':
-      console.log("Herramienta 'rectangle' no implementada aún")
+      context.strokeStyle = colorPicker.value || '#000000'
+      setRectangleTool(context)(canvas)
       break
     case 'circle':
-      console.log("Herramienta 'circle' no implementada aún")
+      context.strokeStyle = colorPicker.value || '#000000'
+      setCircleTool(context)(canvas)
       break
     case 'line':
-      console.log("Herramienta 'line' no implementada aún")
+      context.strokeStyle = colorPicker.value || '#000000'
+      setLineTool(context)(canvas)
       break
     case 'back':
       console.log("Herramienta 'back' no implementada aún")

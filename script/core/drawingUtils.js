@@ -24,35 +24,51 @@ const stopDrawing = (context) => {
   context.lastY = null
 }
 
+// Almacenar la herramienta activa (para evitar múltiples herramientas activas)
+let currentActiveHandler = null
+
+// Limpiar los handlers anteriores de cualquier herramienta
+const cleanupPreviousHandlers = (canvas) => {
+  if (currentActiveHandler) {
+    removeEvents(canvas, currentActiveHandler)
+    currentActiveHandler = null
+  }
+}
+
 // Configurar eventos genéricos para herramientas
 const createTool = (context, { onStart, onMove, onStop }) => {
-  let isDrawing = false
-
   return (canvas) => {
+    // Limpiar cualquier herramienta activa anterior
+    cleanupPreviousHandlers(canvas)
+
     const getRect = () => canvas.getBoundingClientRect()
+    let isDrawing = false
 
     const handlers = {
       mousedown: (event) => {
-        isDrawing = onStart(event, context, getRect)
+        isDrawing = onStart(event, context, getRect) || false
       },
       mousemove: (event) => {
         if (isDrawing) onMove(event, context, getRect)
       },
-      mouseup: () => {
+      mouseup: (event) => {
         if (isDrawing) {
-          onStop(context)
+          onStop(event, context, getRect)
           isDrawing = false
         }
       },
-      mouseout: () => {
+      mouseout: (event) => {
         if (isDrawing) {
-          onStop(context)
+          onStop(event, context, getRect)
           isDrawing = false
         }
       },
     }
 
-    removeEvents(canvas, handlers)
+    // Guardar los handlers actuales
+    currentActiveHandler = handlers
+
+    // Aplicar los eventos
     addEvents(canvas, handlers)
   }
 }

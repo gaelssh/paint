@@ -1,4 +1,3 @@
-// shapes/square.js
 import {
   getCoordinates,
   startDrawing,
@@ -6,33 +5,26 @@ import {
   createTool,
 } from '../core/drawingUtils.js'
 
-// Función para dibujar un cuadrado al estilo Paint de Windows
-// El punto inicial queda fijo y el lado del cuadrado se determina por
-// la distancia más grande entre el punto inicial y el punto final
-const drawSquare = (context, startX, startY, endX, endY) => {
+// Función para dibujar un círculo al estilo Paint de Windows
+// El punto inicial y final determinan un rectángulo, y el círculo/elipse
+// queda inscrito en ese rectángulo
+const drawCircle = (context, startX, startY, endX, endY) => {
   if (endX === null || endY === null) return
 
-  // Calcular el lado del cuadrado
-  const width = endX - startX
-  const height = endY - startY
-  const side = Math.max(Math.abs(width), Math.abs(height))
+  // Calcular el centro y los radios
+  const centerX = (startX + endX) / 2
+  const centerY = (startY + endY) / 2
+  const radiusX = Math.abs(endX - startX) / 2
+  const radiusY = Math.abs(endY - startY) / 2
 
-  // Determinar la dirección del cuadrado
-  const signX = Math.sign(width) || 1
-  const signY = Math.sign(height) || 1
-
-  // Calcular el punto final manteniendo la proporción de cuadrado
-  const finalX = startX + side * signX
-  const finalY = startY + side * signY
-
-  // Dibujar el cuadrado
   context.beginPath()
-  context.rect(startX, startY, finalX - startX, finalY - startY)
+  // Dibujar elipse (círculo si width == height)
+  context.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI)
   context.stroke()
 }
 
-// Configurar la herramienta cuadrado
-const setSquareTool = (context) => {
+// Configurar la herramienta círculo
+const setCircleTool = (context) => {
   let startX, startY
   let canvasBackup = null
 
@@ -66,8 +58,8 @@ const setSquareTool = (context) => {
       context.save()
       context.setLineDash([5, 5]) // Línea punteada
 
-      // Dibujar el cuadrado en previsualización
-      drawSquare(context, startX, startY, currentX, currentY)
+      // Dibujar el círculo en previsualización
+      drawCircle(context, startX, startY, currentX, currentY)
 
       // Restaurar estilo
       context.restore()
@@ -84,10 +76,10 @@ const setSquareTool = (context) => {
       // Obtener la posición final del mouse
       const { x: endX, y: endY } = getCoordinates(event, getRect)
 
-      // Dibujar el cuadrado final con línea sólida
+      // Dibujar el círculo final con línea sólida
       context.save()
       context.setLineDash([]) // Línea sólida
-      drawSquare(context, startX, startY, endX, endY)
+      drawCircle(context, startX, startY, endX, endY)
       context.restore()
 
       // Limpiar
@@ -96,4 +88,4 @@ const setSquareTool = (context) => {
   })
 }
 
-export { drawSquare, setSquareTool }
+export { drawCircle, setCircleTool }
