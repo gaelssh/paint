@@ -1,5 +1,6 @@
 // core/drawingUtils.js
 import { addEvents, removeEvents } from './events.js'
+import { saveToHistory } from './history.js'
 
 // Calcular coordenadas relativas al canvas
 const getCoordinates = (event, getRect) => {
@@ -22,6 +23,7 @@ const startDrawing = (event, context, getRect) => {
 const stopDrawing = (context) => {
   context.lastX = null
   context.lastY = null
+  // No necesitamos guardar aquí ya que lo hacemos en mouseup/mouseout
 }
 
 // Almacenar la herramienta activa (para evitar múltiples herramientas activas)
@@ -43,24 +45,41 @@ const createTool = (context, { onStart, onMove, onStop }) => {
 
     const getRect = () => canvas.getBoundingClientRect()
     let isDrawing = false
+    let hasChanges = false
 
     const handlers = {
       mousedown: (event) => {
         isDrawing = onStart(event, context, getRect) || false
+        if (isDrawing) {
+          hasChanges = false
+        }
       },
       mousemove: (event) => {
-        if (isDrawing) onMove(event, context, getRect)
+        if (isDrawing) {
+          onMove(event, context, getRect)
+          hasChanges = true
+        }
       },
       mouseup: (event) => {
         if (isDrawing) {
           onStop(event, context, getRect)
           isDrawing = false
+
+          // Solo guardar en el historial si hubo cambios
+          if (hasChanges) {
+            saveToHistory()
+          }
         }
       },
       mouseout: (event) => {
         if (isDrawing) {
           onStop(event, context, getRect)
           isDrawing = false
+
+          // Solo guardar en el historial si hubo cambios
+          if (hasChanges) {
+            saveToHistory()
+          }
         }
       },
     }

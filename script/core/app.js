@@ -3,6 +3,7 @@ import { setupInputListeners } from './inputs.js'
 import { setupToolListeners, setTool } from './tools.js'
 import { clearCanvas } from './clear.js'
 import { resetShapes } from './state.js'
+import { initHistory, saveToHistory } from './history.js'
 
 const init = () => {
   if (!canvas || !context) {
@@ -13,7 +14,12 @@ const init = () => {
   initializeCanvas()
   setupInputListeners()
   setupToolListeners()
-  setTool('pencil') // Herramienta por defecto
+
+  // Inicializar el historial
+  initHistory()
+
+  // Establecer la herramienta de lápiz por defecto
+  setTool('pencil')
 }
 
 // Ejecutar
@@ -23,5 +29,7 @@ init()
 window.clearCanvas = () => {
   clearCanvas(context, canvas)
   resetShapes()
+  // Guardar el estado del canvas limpio en el historial
+  saveToHistory()
 }
 window.setTool = setTool

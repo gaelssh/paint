@@ -9,6 +9,7 @@ import { setLineTool } from '../shapes/line.js'
 import { addEvents } from './events.js'
 import { colorPicker } from './inputs.js' // Importar colorPicker
 import { clearCanvas } from './clear.js' // Importar clearCanvas
+import { undo, redo, saveToHistory } from './history.js' // Importar funciones de historial
 
 const tools = document.querySelectorAll('.tools button')
 let currentTool = 'pencil'
@@ -53,6 +54,8 @@ const setTool = (tool) => {
     case 'clear':
       // Clear the canvas
       clearCanvas(context, canvas)
+      // Guardar el estado del canvas limpio en el historial
+      saveToHistory()
 
       // Manually reset to pencil without recursive call
       tools.forEach((button) => button.classList.remove('active'))
@@ -85,10 +88,12 @@ const setTool = (tool) => {
       setLineTool(context)(canvas)
       break
     case 'back':
-      console.log("Herramienta 'back' no implementada aún")
+      // Retroceder un paso en el historial
+      undo()
       break
     case 'forward':
-      console.log("Herramienta 'forward' no implementada aún")
+      // Avanzar un paso en el historial
+      redo()
       break
     case 'download':
       console.log("Herramienta 'download' no implementada aún")

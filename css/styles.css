@@ -75,6 +75,13 @@ button {
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
+/* Estado de botón deshabilitado */
+button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* Botones secondary (blanco) */
 .btn-secondary {
   background-color: #f0f0f0;
@@ -87,6 +94,11 @@ button {
 
   &.active {
     border-color: #0077ff;
+  }
+
+  &.disabled {
+    border-color: transparent;
+    background-color: #f0f0f0;
   }
 
   img {
@@ -109,6 +121,11 @@ button {
   &:hover {
     border-color: #8ac1ff;
     background-color: #0056b3;
+  }
+
+  &.disabled {
+    border-color: transparent;
+    background-color: #0077ff;
   }
 
   img {
