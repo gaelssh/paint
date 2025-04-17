@@ -15,6 +15,80 @@ const tools = document.querySelectorAll('.tools button')
 let currentTool = 'pencil'
 let savedColor = '#000000' // Para guardar el color antes de cambiar al eraser
 
+// Función para exportar el canvas como PNG
+const exportAsPNG = () => {
+  try {
+    // Crear un enlace temporal para la descarga
+    const link = document.createElement('a')
+    link.download = 'paint-dibujo.png'
+
+    // Convertir el canvas a una URL de datos
+    link.href = canvas.toDataURL('image/png')
+
+    // Añadir al documento, simular clic y eliminar
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (error) {
+    console.error('Error al exportar la imagen:', error)
+    alert('Hubo un error al exportar la imagen. Por favor, intenta nuevamente.')
+  }
+}
+
+// Función para importar una imagen al canvas
+const importImage = () => {
+  try {
+    // Crear un input de tipo archivo temporal
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/png, image/jpeg, image/gif'
+
+    // Manejar el evento change
+    input.onchange = (e) => {
+      const file = e.target.files[0]
+      if (!file) return
+
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const img = new Image()
+        img.onload = () => {
+          // Guardar estado anterior para historial
+          const previousState = context.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          )
+
+          // Dibujar la imagen en el canvas
+          context.drawImage(
+            img,
+            0,
+            0,
+            img.width,
+            img.height,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          )
+
+          // Guardar en el historial
+          saveToHistory()
+        }
+        img.src = event.target.result
+      }
+      reader.readAsDataURL(file)
+    }
+
+    // Simular clic en el input
+    input.click()
+  } catch (error) {
+    console.error('Error al importar la imagen:', error)
+    alert('Hubo un error al importar la imagen. Por favor, intenta nuevamente.')
+  }
+}
+
 const setTool = (tool) => {
   // Desactivar todas las herramientas anteriores
   tools.forEach((button) => button.classList.remove('active'))
@@ -96,10 +170,12 @@ const setTool = (tool) => {
       redo()
       break
     case 'download':
-      console.log("Herramienta 'download' no implementada aún")
+      // Exportar el canvas como PNG
+      exportAsPNG()
       break
     case 'upload':
-      console.log("Herramienta 'upload' no implementada aún")
+      // Importar una imagen al canvas
+      importImage()
       break
     default:
       console.error(`Herramienta desconocida: ${tool}`)
